@@ -31,7 +31,7 @@ const generateAccessAndRefreshTokens = async (userId) => {
   }
 };
 
-// Register User
+
 const registerUser = asyncHandler(async (req, res) => {
   const { fullname, username, email, password } = req.body;
 
@@ -45,15 +45,15 @@ const registerUser = asyncHandler(async (req, res) => {
   }
   
 
-  // Create new user
+
   const user = await User.create({
     fullname,
     email,
     password,
     username,
-    // isEmailVerified: false,
+
   });
-   // If you want to generate tokens after registration:
+
   const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(user._id);
 
   return res.status(201).json(
@@ -89,7 +89,7 @@ const login = asyncHandler(async (req, res) => {
   
  const options = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === "production", // ✅ only secure in production
+  secure: process.env.NODE_ENV === "production",
   sameSite: "lax"
 };
 
