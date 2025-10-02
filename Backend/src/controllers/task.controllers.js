@@ -2,8 +2,6 @@ import { Task } from "../models/Task.models.js";
 import { asyncHandler } from "../utils/async-handler.js";
 import { ApiError } from "../utils/api-error.js";
 import { ApiResponse } from "../utils/api-response.js";
-
-// ✅ Add Task
 const createTask = asyncHandler(async (req, res) => {
   const { title, description, category, priority, due_date } = req.body;
 
@@ -16,15 +14,12 @@ const createTask = asyncHandler(async (req, res) => {
     category,
     priority,
     due_date,
-    user: req.user._id, // ✅ ensure task is linked to logged-in user
-  });
+    user: req.user._id,  });
 
   return res.status(201).json(
     new ApiResponse(201, { task }, "Task created successfully")
   );
 });
-
-// ✅ View all tasks of user
 const getTask = asyncHandler(async (req, res) => {
   const tasks = await Task.find({ user: req.user._id }).sort({ createdAt: -1 });
 
@@ -37,7 +32,6 @@ const getTask = asyncHandler(async (req, res) => {
   );
 });
 
-// ✅ Update task
 const updateTask = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const updates = req.body;
@@ -55,7 +49,6 @@ const updateTask = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, { task }, "Task updated successfully"));
 });
 
-// ✅ Toggle task completion
 const toggleComplete = asyncHandler(async (req, res) => {
   const task = await Task.findOne({
     _id: req.params.id,
@@ -71,8 +64,6 @@ const toggleComplete = asyncHandler(async (req, res) => {
     new ApiResponse(200, { task }, "Task completion status updated")
   );
 });
-
-// ✅ Delete task (fixed)
 const deleteTask = asyncHandler(async (req, res) => {
   const task = await Task.findOneAndDelete({
     _id: req.params.id,
@@ -85,5 +76,4 @@ const deleteTask = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, {}, "Task successfully deleted"));
 });
-
 export { createTask, getTask, updateTask, toggleComplete, deleteTask };
